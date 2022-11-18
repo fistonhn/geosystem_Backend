@@ -7,16 +7,17 @@ const { onError, onSuccess } = require("../utils/response");
 class postController {
 
   static async createPost(req, res) {
-    if (!req.files.facemappingSketchImg[0]) return onError(res, 400, "Image sketch is required");
-    if (!req.files.photos[0]) return onError(res, 400, "Please upload a photos");
+
+    if (req.files.facemappingSketchImg[0] === undefined) return onError(res, 400, "Image sketch is required");
+    if (req.files.photos[0] === undefined) return onError(res, 400, "Please upload a photos");
 
     const urlToFacemappingSketchImg = req.files.facemappingSketchImg[0].path;
-    const urlToPhotos = req.files.photos[0].path;
+    const urlToPhotos = req.files.photos[0].path; 
 
     const username = req.authUser.username 
     
     const userFound = await Users.findOne({ username: username });
-      if (!userFound) return onError(res, 404, "user not found");
+      if (!userFound) return onError(res, 404, "user not found"); 
 
     const newPost = new Posts({
       username: username,
