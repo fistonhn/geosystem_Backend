@@ -166,7 +166,7 @@ class postController {
 
   static async login(req, res) {
     try {
-      const user = await Users.findOne({ email: req.body.email });
+      const user = await Users.findOne({ username: req.body.username });
       if (!user) return onError(res, 401, "user not found");
 
 
@@ -208,7 +208,7 @@ class postController {
       const user = req.authUser.username 
 
       const posts = await Posts.find({username: user});
-      if (!posts) return onError(res, 404, "No records at the moment");
+      if (posts.length===0) return onError(res, 404, "No records at the moment");
 
       return onSuccess(
         res,

@@ -16,9 +16,11 @@ const verifyUserAuthToken = async (req, res, next) => {
       return res.status(401).json({ status: 401, error: 'Unauthorised Token or token not provided', err });
     }
     req.authUser = decodedToken;
-    const authEmail = decodedToken.email;
+    const authUser = decodedToken.username;
 
-    const userExist = await Users.findOne({ email: authEmail });
+    console.log(authUser);
+
+    const userExist = await Users.findOne({ username: authUser });
     if (!userExist) return onError(res, 401, "You are not authorized to perform this action");
 
     next();
