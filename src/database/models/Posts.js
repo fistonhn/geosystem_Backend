@@ -304,6 +304,25 @@ const postSchema = mongoose.Schema({
   massQuality: {
     type: String,
   }, 
+
+  rqd: {
+    type: String,
+  },  
+  jn: {
+    type: String,
+  }, 
+  jr: {
+    type: String,
+  }, 
+  ja: {
+    type: String,
+  },  
+  jw: {
+    type: String,
+  }, 
+  srf: {
+    type: String,
+  }, 
   
   
 },

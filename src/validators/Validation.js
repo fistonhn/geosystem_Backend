@@ -116,6 +116,14 @@ const postValidation = (data) => {
     qIndex: Joi.string(),
     massQuality: Joi.string(),
 
+    rqd: Joi.string(),
+    jn: Joi.string(),
+    jr: Joi.string(),
+    ja: Joi.string(),
+    jw: Joi.string(),
+    srf: Joi.string(),
+
+
 
   });
   return schema.validate(data);

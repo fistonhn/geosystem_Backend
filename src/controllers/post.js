@@ -1,6 +1,10 @@
+const fs = require('fs-extra');
+
 const generateToken = require("../helper/generateAuthToken");
 const Posts = require("../database/models/Posts");
 const Users = require("../database/models/Users");
+const cloudinary = require("../helper/cloudinary");
+
 
 const { onError, onSuccess } = require("../utils/response");
 
@@ -13,6 +17,16 @@ class postController {
 
     const urlToFacemappingSketchImg = req.files.facemappingSketchImg[0].path;
     const urlToPhotos = req.files.photos[0].path; 
+
+    const uploadingSketch= await cloudinary.uploader.upload(urlToFacemappingSketchImg, {
+      folder: "urlToingLogo",
+    });
+    await fs.remove(urlToFacemappingSketchImg);
+
+    const uploadingPhoto= await cloudinary.uploader.upload(urlToPhotos, {
+      folder: "urlToingLogo",
+    });
+    await fs.remove(urlToPhotos);
 
     const username = req.authUser.username 
     
@@ -35,7 +49,7 @@ class postController {
       excavationMethod: req.body.excavationMethod,
       ressNo: req.body.ressNo,
   
-      facemappingSketchImg: urlToFacemappingSketchImg,
+      facemappingSketchImg: uploadingSketch.secure_url,
       water: req.body.water,
       lPerMinPerM: req.body.lPerMinPerM,
       geologicalStructures: req.body.geologicalStructures,
@@ -129,9 +143,16 @@ class postController {
       otherRockType: req.body.otherRockType,
       additionalDescription: req.body.additionalDescription,
       notes: req.body.notes,
-      photos: urlToPhotos,
+      photos: uploadingPhoto.secure_url,
       qIndex: req.body.qIndex,
       massQuality: req.body.massQuality,
+
+      rqd: req.body.rqd,
+      jn: req.body.jn,
+      jr: req.body.jr,
+      ja: req.body.ja,
+      jw: req.body.jw,
+      srf: req.body.srf,
   })  
     try {
         const post = await newPost.save()
