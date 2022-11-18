@@ -205,7 +205,9 @@ class postController {
 
   static async getAllPosts(req, res) {
     try {
-      const posts = await Posts.find();
+      const user = req.authUser.username 
+
+      const posts = await Posts.find({username: user});
       if (!posts) return onError(res, 404, "No records at the moment");
 
       return onSuccess(
