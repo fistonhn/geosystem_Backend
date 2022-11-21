@@ -322,8 +322,10 @@ const postSchema = mongoose.Schema({
   }, 
   srf: {
     type: String,
-  }, 
-  
+  },
+  supporting: {
+    type: String,
+  } 
   
 },
 {

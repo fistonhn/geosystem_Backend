@@ -153,6 +153,8 @@ class postController {
       ja: req.body.ja,
       jw: req.body.jw,
       srf: req.body.srf,
+
+      supporting: req.body.supporting
   })  
     try {
         const post = await newPost.save()

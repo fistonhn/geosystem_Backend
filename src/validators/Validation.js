@@ -123,8 +123,7 @@ const postValidation = (data) => {
     jw: Joi.string(),
     srf: Joi.string(),
 
-
-
+    supporting: Joi.string(),
   });
   return schema.validate(data);
 };
