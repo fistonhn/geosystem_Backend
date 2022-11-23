@@ -13,6 +13,7 @@ router.post("/createPost", [ upload, verifyUserAuthToken ], postController.creat
 router.get("/getAllPosts", [ verifyUserAuthToken ], postController.getAllPosts);
 router.get("/getOnePost/:id", [ verifyUserAuthToken ], postController.getOnePost);
 
+router.delete("/deletePost/:id", [ verifyUserAuthToken ], postController.deletePost);
 
 
 module.exports = router;

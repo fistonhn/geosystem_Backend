@@ -16,17 +16,25 @@ class postController {
     if (req.files.photos[0] === undefined) return onError(res, 400, "Please upload a photos");
 
     const urlToFacemappingSketchImg = req.files.facemappingSketchImg[0].path;
-    const urlToPhotos = req.files.photos[0].path; 
 
     const uploadingSketch= await cloudinary.uploader.upload(urlToFacemappingSketchImg, {
       folder: "urlToingLogo",
     });
     await fs.remove(urlToFacemappingSketchImg);
 
-    const uploadingPhoto= await cloudinary.uploader.upload(urlToPhotos, {
-      folder: "urlToingLogo",
-    });
-    await fs.remove(urlToPhotos);
+    
+    let allPhotosUrl = []
+
+    for (let i = 0; i < req.files.photos.length; i++) {
+      const locaFilePath = req.files.photos[i].path;
+
+      const storeImages = await cloudinary.uploader.upload(locaFilePath, {folder: "perksImages", secure: true});
+
+      allPhotosUrl.push(storeImages.secure_url);
+
+      await fs.remove(locaFilePath);
+
+  }
 
     const username = req.authUser.username 
     
@@ -143,7 +151,7 @@ class postController {
       otherRockType: req.body.otherRockType,
       additionalDescription: req.body.additionalDescription,
       notes: req.body.notes,
-      photos: uploadingPhoto.secure_url,
+      photos: allPhotosUrl,
       qIndex: req.body.qIndex,
       massQuality: req.body.massQuality,
 
@@ -237,6 +245,19 @@ class postController {
 
     } catch (error) {
       console.log('error', error)
+      return onError(res, 500, "internal server error");
+    }
+  }
+
+  static async deletePost(req, res) {
+    try {
+      const post = await Posts.findOne({ _id: req.params.id })
+      if (!post) return onError(res, 404, "Post not found!");
+
+      await Posts.deleteOne({ _id: req.params.id })
+      return onSuccess( res, 200, `Post successfully deleted`);
+
+    } catch (error) {
       return onError(res, 500, "internal server error");
     }
   }

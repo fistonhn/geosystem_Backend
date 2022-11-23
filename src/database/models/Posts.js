@@ -296,7 +296,7 @@ const postSchema = mongoose.Schema({
     type: String,
   },
   photos: {
-    type: String,
+    type: Array,
   },  
   qIndex: {
     type: String,
